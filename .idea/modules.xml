@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../ProjectEuler/.idea/ProjectEuler.iml" filepath="$PROJECT_DIR$/../ProjectEuler/.idea/ProjectEuler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sadece_python/miuul/.idea/miuul.iml" filepath="$PROJECT_DIR$/../sadece_python/miuul/.idea/miuul.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/python_kural_tabanlı_sınıflandırma_potansiyel_musteri_getirisi_hesaplama.iml" filepath="$PROJECT_DIR$/.idea/python_kural_tabanlı_sınıflandırma_potansiyel_musteri_getirisi_hesaplama.iml" />
     </modules>
   </component>

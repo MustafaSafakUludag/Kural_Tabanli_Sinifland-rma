@@ -60,6 +60,29 @@ import pandas as pd
 pd.set_option("display.max_rows", None)
 df = pd.read_csv('Datasets/persona.csv')
 
+def check_df(dataframe, head=4, tail=4):
+    print("##################### Shape #####################")
+    print(dataframe.shape)
+
+    print("##################### Types #####################")
+    print(dataframe.dtypes)
+
+    print("##################### Head #####################")
+    print(dataframe.head(head))
+
+    print("##################### Tail #####################")
+    print(dataframe.tail(tail))
+
+    print("##################### NA #####################")
+    print(dataframe.isnull().sum())
+
+    print("##################### Quantiles #####################")
+    print(dataframe.describe([0, 0.05, 0.50, 0.95, 0.99, 1]).T)
+
+check_df(df)
+print("*"*100)
+
+
 print(df.head())
 """
    PRICE   SOURCE   SEX COUNTRY  AGE
@@ -90,6 +113,7 @@ memory usage: 234.4+ KB
 """
 
 # Soru 2: Kaç unique SOURCE vardır? Frekansları nedir?
+
 print(df["SOURCE"].nunique())
 """
 2
@@ -102,6 +126,7 @@ Name: SOURCE, dtype: int64
 """
 
 # Soru 3: Kaç unique PRICE vardır?
+
 print(df["PRICE"].unique())
 """
 [39 49 29 19 59  9]
@@ -112,6 +137,7 @@ print(df["PRICE"].nunique())
 """
 
 # Soru 4: Hangi PRICE'dan kaçar tane satış gerçekleşmiş?
+
 print(df["PRICE"].value_counts())
 """
 29    1305
@@ -123,6 +149,7 @@ print(df["PRICE"].value_counts())
 Name: PRICE, dtype: int64
 """
 # Soru 5: Hangi ülkeden kaçar tane satış olmuş?
+
 print(df["COUNTRY"].value_counts())
 """
 usa    2065
@@ -157,6 +184,7 @@ usa       2065
 """
 
 # Soru 6: Ülkelere göre satışlardan toplam ne kadar kazanılmış?
+
 print(df.groupby("COUNTRY")["PRICE"].sum())
 """
 COUNTRY
@@ -192,6 +220,7 @@ usa      70225
 """
 
 # Soru 7: SOURCE türlerine göre göre satış sayıları nedir?
+
 print(df["SOURCE"].value_counts())
 """
 android    2974
@@ -199,6 +228,7 @@ ios        2026
 Name: SOURCE, dtype: int64
 """
 # Soru 8: Ülkelere göre PRICE ortalamaları nedir?
+
 print(df.groupby(by=['COUNTRY']).agg({"PRICE": "mean"}))
 """
              PRICE
@@ -211,6 +241,7 @@ tur      34.787140
 usa      34.007264
 """
 # Soru 9: SOURCE'lara göre PRICE ortalamaları nedir?
+
 print(df.groupby(by=['SOURCE']).agg({"PRICE": "mean"}))
 """
              PRICE
@@ -219,6 +250,7 @@ android  34.174849
 ios      34.069102
 """
 # Soru 10: COUNTRY-SOURCE kırılımında PRICE ortalamaları nedir?
+
 print(df.groupby(by=["COUNTRY", 'SOURCE']).agg({"PRICE": "mean"}))
 """
                      PRICE
@@ -240,6 +272,8 @@ usa     android  33.760357
 #############################################
 # GÖREV 2: COUNTRY, SOURCE, SEX, AGE kırılımında ortalama kazançlar nedir?
 #############################################
+
+
 print(df.groupby(["COUNTRY", 'SOURCE', "SEX", "AGE"]).agg({"PRICE": "mean"}).head())
 """
                                 PRICE
@@ -256,6 +290,8 @@ bra     android female 15   38.714286
 #############################################
 # Önceki sorudaki çıktıyı daha iyi görebilmek için sort_values metodunu azalan olacak şekilde PRICE'a uygulayınız.
 # Çıktıyı agg_df olarak kaydediniz.
+
+
 agg_df = df.groupby(by=["COUNTRY", 'SOURCE', "SEX", "AGE"]).agg({"PRICE": "mean"}).sort_values("PRICE", ascending=False)
 print(agg_df.head())
 """
@@ -275,6 +311,8 @@ deu     android female 36    49.0
 # Bu isimleri değişken isimlerine çeviriniz.
 # İpucu: reset_index()
 # agg_df.reset_index(inplace=True)
+
+
 agg_df = agg_df.reset_index()
 print(agg_df.head())
 """
@@ -294,6 +332,8 @@ print(agg_df.head())
 # Örneğin: '0_18', '19_23', '24_30', '31_40', '41_70'
 
 #İlgili değişken için bölme işlemi yapacağız böylece yoğunluk hangi yaş aralığında min. max. değerlerine ulaşmış olacağız.
+
+
 print(agg_df["AGE"].describe())
 """
 count    348.000000
@@ -306,14 +346,17 @@ min       15.000000
 max       66.000000
 """
 # AGE değişkeninin nerelerden bölüneceğini belirtelim:
+
 bins = [0, 18, 23, 30, 40, agg_df["AGE"].max()]
 
 # Bölünen noktalara karşılık isimlendirmelerin ne olacağını ifade edelim:
+
 mylabels = ['0_18', '19_23', '24_30', '31_40', '41_' + str(agg_df["AGE"].max())]
 
 # age'i bölelim:
 #yeni bir değişken oluşturduk cut methoduyla ilili değişkeni bölme işlemi gerçekleştirdik.
 #yukarıdaki aralıklara göre bölme işlemi ve label işlemlerinin yapılmasını istedik.
+
 agg_df["age_cat"] = pd.cut(agg_df["AGE"], bins, labels=mylabels)
 print(agg_df.head())
 """
@@ -485,7 +528,7 @@ print(agg_df[agg_df["customers_level_based"] == new_user])
 
 
 def new(agg_df, new_user):
-    print(agg_df[agg_df["customer_level_based"]== new_user])
+    print(agg_df[agg_df["customers_level_based"]== new_user])
 
 new(agg_df,"TUR_ANDROID_FEMALE_31_40")
 
